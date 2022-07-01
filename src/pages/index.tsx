@@ -40,33 +40,46 @@ const PostListContainer = styled.section`
 export default function IndexPage() {
   const pageNumber = useRef(1);
   const container = useRef<HTMLElement>(null);
+  let height = 0;
 
-  useEffect(function () {
-    const height = document.getElementById("___gatsby")?.clientHeight || 0;
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      height = document.getElementById("___gatsby")?.clientHeight || 0;
+    });
+  }, []);
+
+  // TODO : F11버튼 감지해서 화면 정상적으로 동작하게끔 수정해야함 ..
+  useEffect(() => {
+    height = document.getElementById("___gatsby")?.clientHeight || 0;
     let lastPage = document.querySelectorAll(".content").length;
 
     function wheelHandler(e: WheelEvent) {
       window.removeEventListener("wheel", wheelHandler);
 
       e.preventDefault();
-      setTimeout(() => {
+      let flag = setTimeout(() => {
         if (0 < e.deltaY) {
-          if (pageNumber.current != lastPage) pageNumber.current += 1;
+          if (pageNumber.current != lastPage) {
+            pageNumber.current += 1;
+          }
         } else if (0 > e.deltaY) {
-          if (pageNumber.current != 1) pageNumber.current -= 1;
+          if (pageNumber.current != 1) {
+            pageNumber.current -= 1;
+          }
         }
 
         if (container.current) {
           const scrollyValue = (pageNumber.current - 1) * height;
 
           container.current.style.top = `-${scrollyValue}px`;
+          clearTimeout(flag);
           window.addEventListener("wheel", wheelHandler, { passive: false });
         }
-      }, 300);
+      }, 500);
     }
 
     window.addEventListener("wheel", wheelHandler, { passive: false });
-  }, []);
+  }, [height]);
 
   return (
     <>
