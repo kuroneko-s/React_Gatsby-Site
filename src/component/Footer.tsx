@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React from "react";
 import * as Common from "../common";
-import { VisuallyHidden } from "./../../.cache/fast-refresh-overlay/components/overlay";
 
 const FooterContainer = styled.section`
   display: flex;
@@ -25,6 +24,7 @@ const FooterInfoContainer = styled.div`
   align-items: center;
 
   width: 100%;
+  height: 100%;
 
   font-size: 1.1rem;
   overflow-x: hidden;
@@ -34,6 +34,14 @@ const FooterInfoContainer = styled.div`
     padding: 10px 20px;
     font-size: 1rem;
   }
+
+  p {
+    font-size: 0.95rem;
+  }
+`;
+
+const DefaultContainer = styled.div`
+  height: 2rem;
 `;
 
 export default function Footer() {
@@ -42,10 +50,10 @@ export default function Footer() {
   return (
     <FooterContainer>
       <FooterInfoContainer>
-        <div>
+        <DefaultContainer>
           <p>Site Name</p>
-        </div>
-        <div
+        </DefaultContainer>
+        <DefaultContainer
           style={{
             textAlign: "center",
           }}
@@ -54,10 +62,10 @@ export default function Footer() {
             Github : {GIT_ADDRESS}
           </a>
           <p>&copy;Choi DongHyuk</p>
-        </div>
-        <div>
+        </DefaultContainer>
+        <DefaultContainer>
           <a href={`mailto: ${EMAIL_ADDRESS}`}>Email : {EMAIL_ADDRESS}</a>
-        </div>
+        </DefaultContainer>
       </FooterInfoContainer>
     </FooterContainer>
   );

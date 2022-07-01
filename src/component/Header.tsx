@@ -2,6 +2,7 @@ import { Link } from "gatsby";
 import React from "react";
 import styled from "styled-components";
 import Responsive from "./Responsive";
+import { StaticImage } from "gatsby-plugin-image";
 
 const HeaderBlock = styled.div`
   display: flex;
@@ -13,19 +14,25 @@ const HeaderBlock = styled.div`
   height: 4rem;
   padding: 0 20px;
 
-  background-color: red;
+  background-color: #3ed2ce;
 `;
 
-const Logo = styled.img``;
-
-const Post = styled(Link)``;
+const Post = styled(Link)`
+  font-weight: 600;
+`;
 
 export default function Header() {
   return (
     <Responsive>
       <HeaderBlock>
         <Link to="/">
-          <Logo src="../images/sample/header_logo.png" alt="Logo" />
+          <StaticImage
+            src="../images/sample/header_logo_2.png"
+            alt="Logo"
+            layout="fixed"
+            width={128}
+            height={58}
+          />
         </Link>
 
         <Post to="/post">

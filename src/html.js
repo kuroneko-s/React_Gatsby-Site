@@ -14,7 +14,6 @@ export default function HTML(props) {
         />
         {props.headComponents}
       </head>
-      <style></style>
       <body {...props.bodyAttributes}>
         {props.preBodyComponents}
         <div

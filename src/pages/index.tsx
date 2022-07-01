@@ -1,180 +1,88 @@
-import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
-import Footer from "../component/Footer";
+import React, { useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
+import { GlobalStyled } from "../common";
 import Header from "../component/Header";
 
-const GlobalStyled = createGlobalStyle`
-  html,
-  body,
-  div,
-  span,
-  applet,
-  object,
-  iframe,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  blockquote,
-  pre,
-  a,
-  abbr,
-  acronym,
-  address,
-  big,
-  cite,
-  code,
-  del,
-  dfn,
-  em,
-  img,
-  ins,
-  kbd,
-  q,
-  s,
-  samp,
-  small,
-  strike,
-  strong,
-  sub,
-  sup,
-  tt,
-  var,
-  b,
-  u,
-  i,
-  center,
-  dl,
-  dt,
-  dd,
-  ol,
-  ul,
-  li,
-  fieldset,
-  form,
-  label,
-  legend,
-  table,
-  caption,
-  tbody,
-  tfoot,
-  thead,
-  tr,
-  th,
-  td,
-  article,
-  aside,
-  canvas,
-  details,
-  embed,
-  figure,
-  figcaption,
-  footer,
-  header,
-  hgroup,
-  menu,
-  nav,
-  output,
-  ruby,
-  section,
-  summary,
-  time,
-  mark,
-  audio,
-  video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-  }
-  /* HTML5 display-role reset for older browsers */
-  article,
-  aside,
-  details,
-  figcaption,
-  figure,
-  footer,
-  header,
-  hgroup,
-  menu,
-  nav,
-  section {
-    display: block;
-  }
-  body {
-    line-height: 1;
-  }
-  ol,
-  ul {
-    list-style: none;
-  }
-  blockquote,
-  q {
-    quotes: none;
-  }
-  blockquote:before,
-  blockquote:after,
-  q:before,
-  q:after {
-    content: "";
-    content: none;
-  }
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-  a {color: inherit; text-decoration: none; outline: none}
-  a:hover, a:active {text-decoration: none; color:inherit; background-color:inherit;}
-  
-  * {
-    box-sizing: border-box;
-  }
-`;
+interface AnimationI {
+  height: string;
+}
 
-const MainContainer = styled.div`
-  position: absolute;
+const MainContainer = styled.section<AnimationI>`
+  position: relative;
   background-color: gray;
-  display: flex;
-  flex-direction: column;
+
   width: 100%;
+  height: 100%;
+
+  top: 0;
+
+  .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  transition: all 1.5s;
 `;
 
 const InfoContainer = styled.section`
-  height: 60vh;
+  background-color: red;
 `;
 
 const SkillStackContainer = styled.section`
-  height: 60vh;
+  background-color: blue;
 `;
 
 const PostListContainer = styled.section`
-  height: 60vh;
+  background-color: green;
 `;
 
-const IndexPage = () => {
+export default function IndexPage() {
+  const pageNumber = useRef(1);
+  const container = useRef<HTMLElement>(null);
+
+  useEffect(function () {
+    const height = document.getElementById("___gatsby")?.clientHeight || 0;
+    let lastPage = document.querySelectorAll(".content").length;
+
+    function wheelHandler(e: WheelEvent) {
+      window.removeEventListener("wheel", wheelHandler);
+
+      e.preventDefault();
+      setTimeout(() => {
+        if (0 < e.deltaY) {
+          if (pageNumber.current != lastPage) pageNumber.current += 1;
+        } else if (0 > e.deltaY) {
+          if (pageNumber.current != 1) pageNumber.current -= 1;
+        }
+
+        if (container.current) {
+          const scrollyValue = (pageNumber.current - 1) * height;
+
+          container.current.style.top = `-${scrollyValue}px`;
+          window.addEventListener("wheel", wheelHandler, { passive: false });
+        }
+      }, 300);
+    }
+
+    window.addEventListener("wheel", wheelHandler, { passive: false });
+  }, []);
+
   return (
     <>
       <GlobalStyled />
-      <MainContainer>
-        <Header />
-        <InfoContainer>
+      <MainContainer ref={container}>
+        <InfoContainer className="content">
+          <Header />
           <h1>InfoContainer</h1>
         </InfoContainer>
-        <SkillStackContainer>
+        <SkillStackContainer className="content">
           <h1>SkillStackContainer</h1>
         </SkillStackContainer>
-        <PostListContainer>
+        <PostListContainer className="content">
           <h1>PostListContainer</h1>
         </PostListContainer>
-        <Footer />
       </MainContainer>
     </>
   );
-};
-
-export default IndexPage;
+}
