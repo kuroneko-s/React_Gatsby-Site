@@ -141,7 +141,7 @@ const MainContainer = styled.div`
   background-color: gray;
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  width: 100%;
 `;
 
 const InfoContainer = styled.section`

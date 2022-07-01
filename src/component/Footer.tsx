@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import * as Common from "../common";
+import { VisuallyHidden } from "./../../.cache/fast-refresh-overlay/components/overlay";
 
 const FooterContainer = styled.section`
   display: flex;
@@ -9,8 +10,8 @@ const FooterContainer = styled.section`
   align-items: center;
 
   width: 100%;
-  height: 5rem;
-  padding: 10px 20px;
+  height: 6rem;
+  padding: 0 20px;
   margin-top: 3px;
 
   background-color: gray;
@@ -26,6 +27,13 @@ const FooterInfoContainer = styled.div`
   width: 100%;
 
   font-size: 1.1rem;
+  overflow-x: hidden;
+
+  @media screen and (max-width: 550px) {
+    flex-direction: column;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
 `;
 
 export default function Footer() {

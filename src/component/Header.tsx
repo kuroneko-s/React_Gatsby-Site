@@ -1,6 +1,7 @@
 import { Link } from "gatsby";
 import React from "react";
 import styled from "styled-components";
+import Responsive from "./Responsive";
 
 const HeaderBlock = styled.div`
   display: flex;
@@ -21,13 +22,16 @@ const Post = styled(Link)``;
 
 export default function Header() {
   return (
-    <>
+    <Responsive>
       <HeaderBlock>
-        <Logo src="../images/sample/header_logo.png" alt="Logo" />
+        <Link to="/">
+          <Logo src="../images/sample/header_logo.png" alt="Logo" />
+        </Link>
+
         <Post to="/post">
           <h1>Posts</h1>
         </Post>
       </HeaderBlock>
-    </>
+    </Responsive>
   );
 }
