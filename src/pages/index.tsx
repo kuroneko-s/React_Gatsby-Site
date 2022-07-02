@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import styled, { keyframes } from "styled-components";
 import { GlobalStyled } from "../common";
-import Header from "../component/Header";
+import InfoComponent from "../component/InfoComponent";
+import PostListComponent from "../component/PostListComponent";
+import SkillStackComponent from "../component/SkillStackComponent";
 
 interface AnimationI {
   height: string;
@@ -9,32 +11,18 @@ interface AnimationI {
 
 const MainContainer = styled.section<AnimationI>`
   position: relative;
-  background-color: gray;
 
   width: 100%;
   height: 100%;
-
   top: 0;
+
+  transition: all 0.8s;
 
   .content {
     position: relative;
     width: 100%;
     height: 100%;
   }
-
-  transition: all 1.5s;
-`;
-
-const InfoContainer = styled.section`
-  background-color: red;
-`;
-
-const SkillStackContainer = styled.section`
-  background-color: blue;
-`;
-
-const PostListContainer = styled.section`
-  background-color: green;
 `;
 
 export default function IndexPage() {
@@ -85,16 +73,9 @@ export default function IndexPage() {
     <>
       <GlobalStyled />
       <MainContainer ref={container}>
-        <InfoContainer className="content">
-          <Header />
-          <h1>InfoContainer</h1>
-        </InfoContainer>
-        <SkillStackContainer className="content">
-          <h1>SkillStackContainer</h1>
-        </SkillStackContainer>
-        <PostListContainer className="content">
-          <h1>PostListContainer</h1>
-        </PostListContainer>
+        <InfoComponent className="content" />
+        <SkillStackComponent className="content" />
+        <PostListComponent className="content" />
       </MainContainer>
     </>
   );

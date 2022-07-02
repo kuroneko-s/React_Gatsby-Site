@@ -19,6 +19,11 @@ const HeaderBlock = styled.div`
 
 const Post = styled(Link)`
   font-weight: 600;
+
+  p {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
 `;
 
 export default function Header() {
@@ -36,7 +41,7 @@ export default function Header() {
         </Link>
 
         <Post to="/post">
-          <h1>Posts</h1>
+          <p>Posts</p>
         </Post>
       </HeaderBlock>
     </Responsive>
