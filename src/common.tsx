@@ -132,6 +132,7 @@ const GlobalStyled = createGlobalStyle`
   
   html {
     overflow-y: hidden;
+    overflow-x: hidden;
   }
 
   html, body, #___gatsby, #gatsby-focus-wrapper{

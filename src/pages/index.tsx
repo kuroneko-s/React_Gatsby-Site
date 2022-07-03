@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import styled, { keyframes } from "styled-components";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import { GlobalStyled } from "../common";
 import InfoComponent from "../component/InfoComponent";
 import PostListComponent from "../component/PostListComponent";
@@ -25,58 +25,62 @@ const MainContainer = styled.section<AnimationI>`
   }
 `;
 
-export default function IndexPage() {
-  const pageNumber = useRef(1);
+function IndexPage() {
+  const [pageNumber, setPageNumber] = useState(1);
   const container = useRef<HTMLElement>(null);
+  const lastPage = 3;
   let height = 0;
+  let timeoutEvent: any;
+  let _pageNumber = 1;
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      height = document.getElementById("___gatsby")?.clientHeight || 0;
-    });
-  }, []);
-
-  // TODO : F11버튼 감지해서 화면 정상적으로 동작하게끔 수정해야함 ..
-  useEffect(() => {
+  const resizeHandler = () => {
     height = document.getElementById("___gatsby")?.clientHeight || 0;
-    let lastPage = document.querySelectorAll(".content").length;
+  };
 
-    function wheelHandler(e: WheelEvent) {
-      window.removeEventListener("wheel", wheelHandler);
+  const wheelHandler = (e: WheelEvent) => {
+    e.preventDefault(); // event 기능 동작 멈춰!
 
-      e.preventDefault();
-      let flag = setTimeout(() => {
-        if (0 < e.deltaY) {
-          if (pageNumber.current != lastPage) {
-            pageNumber.current += 1;
-          }
-        } else if (0 > e.deltaY) {
-          if (pageNumber.current != 1) {
-            pageNumber.current -= 1;
-          }
-        }
+    clearTimeout(timeoutEvent); // timeout 중복 동작 방지
+    timeoutEvent = setTimeout(() => changedPageNumber(e), 300);
+  };
 
-        if (container.current) {
-          const scrollyValue = (pageNumber.current - 1) * height;
-
-          container.current.style.top = `-${scrollyValue}px`;
-          clearTimeout(flag);
-          window.addEventListener("wheel", wheelHandler, { passive: false });
-        }
-      }, 500);
+  const changedPageNumber = (e: WheelEvent) => {
+    if (0 < e.deltaY) {
+      if (_pageNumber != lastPage) {
+        _pageNumber = _pageNumber + 1;
+      }
+    } else if (0 > e.deltaY) {
+      if (_pageNumber != 1) {
+        _pageNumber = _pageNumber - 1;
+      }
     }
 
-    window.addEventListener("wheel", wheelHandler, { passive: false });
-  }, [height]);
+    if (container.current) {
+      // page 값을 이용해서 top 위치 값 변경 ( 움직이는 것 처럼 보이는 곳 )
+      const scrollyValue = (_pageNumber - 1) * height;
+      container.current.style.top = `-${scrollyValue}px`;
+
+      clearTimeout(timeoutEvent);
+    }
+  };
+
+  window.addEventListener("resize", resizeHandler);
+  window.addEventListener("wheel", wheelHandler, { passive: false });
+
+  useEffect(() => {
+    height = document.getElementById("___gatsby")?.clientHeight || 0;
+  }, []);
 
   return (
     <>
       <GlobalStyled />
       <MainContainer ref={container}>
-        <InfoComponent className="content" />
+        <InfoComponent className="content" pageNumber={pageNumber} />
         <SkillStackComponent className="content" />
         <PostListComponent className="content" />
       </MainContainer>
     </>
   );
 }
+
+export default IndexPage;
