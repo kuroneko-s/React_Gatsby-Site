@@ -56,7 +56,6 @@ function IndexPage() {
     }
 
     if (container.current) {
-      // page 값을 이용해서 top 위치 값 변경 ( 움직이는 것 처럼 보이는 곳 )
       const scrollyValue = (_pageNumber - 1) * height;
       container.current.style.top = `-${scrollyValue}px`;
 
@@ -64,11 +63,11 @@ function IndexPage() {
     }
   };
 
-  window.addEventListener("resize", resizeHandler);
-  window.addEventListener("wheel", wheelHandler, { passive: false });
-
   useEffect(() => {
     height = document.getElementById("___gatsby")?.clientHeight || 0;
+
+    window.addEventListener("resize", resizeHandler);
+    window.addEventListener("wheel", wheelHandler, { passive: false });
   }, []);
 
   return (
